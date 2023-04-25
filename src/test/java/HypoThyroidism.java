@@ -42,13 +42,19 @@ public class HypoThyroidism extends BaseTest {
   public static ArrayList AllergyIngredientsList= new ArrayList();
   static CheckListHypoThyroidism cht = new CheckListHypoThyroidism();
   
-  static int item_size = 0;
+  static XSSFWorkbook workbook = new XSSFWorkbook();
+  static XSSFSheet eliminationSheet = workbook.createSheet("HypoThyroidism_Elimination");
+  static XSSFSheet addonSheet = workbook.createSheet("HypoThyroidism_AddOn");
+  static XSSFSheet allergySheet = workbook.createSheet("HypoThyroidism_Allergy");
   
-
-@Test
-  public static void eliminationFilter() throws InterruptedException, IOException {
-	 System.out.println("Inside eliminationFilter");  
-	WebElement searchTxt = driver.findElement(By.id("ctl00_txtsearch"));
+  static int pgSize = 0;
+  static int item_size = 0;
+  static int recipeNameListSize = 0;
+  
+  public static void init() throws InterruptedException, IOException {
+	// TODO Auto-generated constructor stub
+	  
+	  WebElement searchTxt = driver.findElement(By.id("ctl00_txtsearch"));
 	    searchTxt.sendKeys("hypothyroidism");
 
 	    WebElement searchBtn = driver.findElement(By.id("ctl00_imgsearch"));
@@ -68,9 +74,16 @@ public class HypoThyroidism extends BaseTest {
 	    prepMethodList.clear();
 	    NutrientList.clear();
 	    RecipeUrlList.clear();
-	  //  IngredientsAdditionList.clear();
-	  //  AllergyIngredientsList.clear();
+	    IngredientsAdditionList.clear();
+	    AllergyIngredientsList.clear();
 
+}
+  
+
+  @Test
+  public static void eliminationFilter() throws InterruptedException, IOException {
+	 System.out.println("Inside eliminationFilter");  
+	 init();
 
 	    for (int x = 1; x <= pgSize; x++) {
 	     
@@ -139,84 +152,17 @@ public class HypoThyroidism extends BaseTest {
 	    }
 
 	    System.out.println("XSS write : recipeNameList.size" + recipeNameList.size());
-	    XSSFWorkbook workbook = new XSSFWorkbook();
-	    XSSFSheet sheet = workbook.createSheet("HypoThyroidism_Elimination");
+	    recipeNameListSize = recipeNameList.size();
+	    writeContentToExcel( eliminationSheet, "Serial No", "RecipeId","Recipe Name", "Ingredients",
+	    		"Preparation Time","Cooking Time", "Preparation method", "Nutrient values", "Recipe URL","To Add Ingredient","Allergy Ingredient", recipeNameListSize );
 	    
-	    sheet.createRow(0);
-	    
-	    sheet.getRow(0).createCell(0).setCellValue("Serial No");
-	    sheet.getRow(0).createCell(1).setCellValue("RecipeId");
-	    sheet.getRow(0).createCell(2).setCellValue("Recipe Name");
-	    //sheet.getRow(0).createCell(3).setCellValue("Recipe Category(Breakfast/lunch/snack/dinner)");
-	    //sheet.getRow(0).createCell(4).setCellValue("Food Category(Veg/non-veg/vegan/Jain)");
-	    sheet.getRow(0).createCell(5).setCellValue("Ingredients");
-	    sheet.getRow(0).createCell(6).setCellValue("Preparation Time");
-	    sheet.getRow(0).createCell(7).setCellValue("Cooking Time");
-	    sheet.getRow(0).createCell(8).setCellValue("Preparation method");
-	    sheet.getRow(0).createCell(9).setCellValue("Nutrient values");
-	    //sheet.getRow(0).createCell(10).setCellValue("Targetted morbid conditions (Diabeties/Hypertension/Hypothyroidism)");
-	    sheet.getRow(0).createCell(11).setCellValue("Recipe URL");
-	   // sheet.getRow(0).createCell(12).setCellValue("To Add Ingredient");
-	   // sheet.getRow(0).createCell(13).setCellValue("Allergy Ingredient");
-	    
-	    int rowno = 1;
-
-	    for (int i = 0; i < recipeNameList.size(); i++) {
-	      {
-	        XSSFRow row = sheet.createRow(rowno++);
-	        System.out.println("rowno : " + rowno);
-	        row.createCell(0).setCellValue(rowno-1);
-	        row.createCell(1).setCellValue(recipeid.get(i).toString());
-	        row.createCell(2).setCellValue(recipeNameList.get(i).toString());
-	        row.createCell(5).setCellValue(ingredientList.get(i).toString());
-	        row.createCell(6).setCellValue(prepTimeList.get(i).toString());
-	        row.createCell(7).setCellValue(cookTimeList.get(i).toString());
-	        row.createCell(8).setCellValue(prepMethodList.get(i).toString());
-	        row.createCell(9).setCellValue(NutrientList.get(i).toString());
-	        row.createCell(11).setCellValue(RecipeUrlList.get(i).toString());
-	       
-	     //   row.createCell(12).setCellValue(IngredientsAdditionList.get(i).toString());
-	     //   row.createCell(13).setCellValue(AllergyIngredientsList.get(i).toString());
-	        
-	        System.out.println("XSS write : " + i);
-	      }
-
-	      FileOutputStream FOS = new FileOutputStream(".\\datafiles\\SmartScrapers_HypoT_Elimination.xlsx");
-	      System.out.println("ingredientList  :==>" + ingredientList.toString());
-
-	      workbook.write(FOS);
-
-	      FOS.close();
-	    }
 	    driver.quit();
  }
 
   @Test
   public static void addonFilter() throws InterruptedException, IOException {
 	  System.out.println("Inside addonFilter");
-	  WebElement searchTxt = driver.findElement(By.id("ctl00_txtsearch"));
-	    searchTxt.sendKeys("hypothyroidism");
-
-	    WebElement searchBtn = driver.findElement(By.id("ctl00_imgsearch"));
-	    searchBtn.click();
-
-	    driver.findElement(By.xpath("//a[@href='recipes-for-hypothyroidism-veg-diet-indian-recipes-849']")).click();
-	  
-	  int pgSize = driver.findElements(By.xpath("//div[@id='pagination']/a")).size();
-	    System.out.println("Pagination size:" + pgSize);
-	    
-	    Thread.sleep(1000);
-	    recipeNameList.clear();
-	    recipeid.clear();
-	    ingredientList.clear();
-	    prepTimeList.clear();
-	    cookTimeList.clear();
-	    prepMethodList.clear();
-	    NutrientList.clear();
-	    RecipeUrlList.clear();
-	    IngredientsAdditionList.clear();
-	  //  AllergyIngredientsList.clear();
-
+	  init();
 
 	    for (int x = 1; x <= pgSize; x++) {
 	     
@@ -292,81 +238,17 @@ public class HypoThyroidism extends BaseTest {
 	    
 	    }
 	    System.out.println("XSS write : recipeNameList.size" + recipeNameList.size());
-	    XSSFWorkbook workbook = new XSSFWorkbook();
-	    XSSFSheet sheet = workbook.createSheet("HypoThyroidism_AddOn");
-	    sheet.createRow(0);
+	   
+	    recipeNameListSize = recipeNameList.size();
+	    writeContentToExcel( addonSheet, "Serial No", "RecipeId","Recipe Name", "Ingredients",
+	    		"Preparation Time","Cooking Time", "Preparation method", "Nutrient values", "Recipe URL","To Add Ingredient","Allergy Ingredient", recipeNameListSize );
 	    
-	    sheet.getRow(0).createCell(0).setCellValue("Serial No");
-	    sheet.getRow(0).createCell(1).setCellValue("RecipeId");
-	    sheet.getRow(0).createCell(2).setCellValue("Recipe Name");
-	    //sheet.getRow(0).createCell(3).setCellValue("Recipe Category(Breakfast/lunch/snack/dinner)");
-	    //sheet.getRow(0).createCell(4).setCellValue("Food Category(Veg/non-veg/vegan/Jain)");
-	    sheet.getRow(0).createCell(5).setCellValue("Ingredients");
-	    sheet.getRow(0).createCell(6).setCellValue("Preparation Time");
-	    sheet.getRow(0).createCell(7).setCellValue("Cooking Time");
-	    sheet.getRow(0).createCell(8).setCellValue("Preparation method");
-	    sheet.getRow(0).createCell(9).setCellValue("Nutrient values");
-	    //sheet.getRow(0).createCell(10).setCellValue("Targetted morbid conditions (Diabeties/Hypertension/Hypothyroidism)");
-	    sheet.getRow(0).createCell(11).setCellValue("Recipe URL");
-	    sheet.getRow(0).createCell(12).setCellValue("To Add Ingredient");
-	   // sheet.getRow(0).createCell(13).setCellValue("Allergy Ingredient");
-	    
-	    int rowno = 1;
-
-	    for (int i = 0; i < recipeNameList.size(); i++) {
-	      {
-	        XSSFRow row = sheet.createRow(rowno++);
-	        System.out.println("rowno : " + rowno);
-	        row.createCell(0).setCellValue(rowno-1);
-	        row.createCell(1).setCellValue(recipeid.get(i).toString());
-	        row.createCell(2).setCellValue(recipeNameList.get(i).toString());
-	        row.createCell(5).setCellValue(ingredientList.get(i).toString());
-	        row.createCell(6).setCellValue(prepTimeList.get(i).toString());
-	        row.createCell(7).setCellValue(cookTimeList.get(i).toString());
-	        row.createCell(8).setCellValue(prepMethodList.get(i).toString());
-	        row.createCell(9).setCellValue(NutrientList.get(i).toString());
-	        row.createCell(11).setCellValue(RecipeUrlList.get(i).toString());
-	       
-	        row.createCell(12).setCellValue(IngredientsAdditionList.get(i).toString());
-	     //   row.createCell(13).setCellValue(AllergyIngredientsList.get(i).toString());
-	        
-	        System.out.println("XSS write : " + i);
-	      }
-
-	      FileOutputStream FOS = new FileOutputStream(".\\datafiles\\SmartScrapers_HypoT_AddOn.xlsx");
-	      System.out.println("ingredientList  :==>" + ingredientList.toString());
-
-	      workbook.write(FOS);
-
-	      FOS.close();
-	    }
 	    driver.quit();
  }
-
   @Test
   public static void allergyFilter() throws InterruptedException, IOException {
 	  System.out.println("Inside allergyFilter");
-	  WebElement searchTxt = driver.findElement(By.id("ctl00_txtsearch"));
-	    searchTxt.sendKeys("hypothyroidism");
-
-	    WebElement searchBtn = driver.findElement(By.id("ctl00_imgsearch"));
-	    searchBtn.click();
-
-	    driver.findElement(By.xpath("//a[@href='recipes-for-hypothyroidism-veg-diet-indian-recipes-849']")).click();
-	  
-	  int pgSize = driver.findElements(By.xpath("//div[@id='pagination']/a")).size();
-	    System.out.println("Pagination size:" + pgSize);
-	    
-	    Thread.sleep(1000);
-	    recipeNameList.clear();
-	    recipeid.clear();
-	    ingredientList.clear();
-	    prepTimeList.clear();
-	    cookTimeList.clear();
-	    prepMethodList.clear();
-	    NutrientList.clear();
-	    RecipeUrlList.clear();
-	    AllergyIngredientsList.clear();
+	  init();
 
 
 	    for (int x = 1; x <= pgSize; x++) {
@@ -444,56 +326,72 @@ public class HypoThyroidism extends BaseTest {
 	    
 	    }
 	    System.out.println("XSS write : recipeNameList.size" + recipeNameList.size());
-	    XSSFWorkbook workbook = new XSSFWorkbook();
-	    XSSFSheet sheet = workbook.createSheet("HypoThyroidism_Allergy");
-	    sheet.createRow(0);
 	   
+	    recipeNameListSize = recipeNameList.size();
+	    writeContentToExcel( allergySheet, "Serial No", "RecipeId","Recipe Name", "Ingredients",
+	    		"Preparation Time","Cooking Time", "Preparation method", "Nutrient values", "Recipe URL","To Add Ingredient","Allergy Ingredient", recipeNameListSize );
 	    
-	    sheet.getRow(0).createCell(0).setCellValue("Serial No");
-	    sheet.getRow(0).createCell(1).setCellValue("RecipeId");
-	    sheet.getRow(0).createCell(2).setCellValue("Recipe Name");
+	    
+	    driver.quit();
+	  
+  }
+  
+  public static void writeContentToExcel (XSSFSheet sht, String Sno, String RecipeId,String RecipeName, String Ingredients,
+  		String PreparationTime, String CookingTime, String PreparationMethod, String NutrientValues, String RecipeURL,String ToAddIngredient,String AllergyIngredient,  int recipeListSize ) throws InterruptedException, IOException{
+
+	  sht.createRow(0);
+	    
+	  sht.getRow(0).createCell(0).setCellValue(Sno);
+	  sht.getRow(0).createCell(1).setCellValue(RecipeId);
+	  sht.getRow(0).createCell(2).setCellValue(RecipeName);
 	    //sheet.getRow(0).createCell(3).setCellValue("Recipe Category(Breakfast/lunch/snack/dinner)");
 	    //sheet.getRow(0).createCell(4).setCellValue("Food Category(Veg/non-veg/vegan/Jain)");
-	    sheet.getRow(0).createCell(5).setCellValue("Ingredients");
-	    sheet.getRow(0).createCell(6).setCellValue("Preparation Time");
-	    sheet.getRow(0).createCell(7).setCellValue("Cooking Time");
-	    sheet.getRow(0).createCell(8).setCellValue("Preparation method");
-	    sheet.getRow(0).createCell(9).setCellValue("Nutrient values");
+	  sht.getRow(0).createCell(3).setCellValue(Ingredients);
+	  sht.getRow(0).createCell(4).setCellValue(PreparationTime);
+	  sht.getRow(0).createCell(5).setCellValue(CookingTime);
+	  sht.getRow(0).createCell(6).setCellValue(PreparationMethod);
+	  sht.getRow(0).createCell(7).setCellValue(NutrientValues);
 	    //sheet.getRow(0).createCell(10).setCellValue("Targetted morbid conditions (Diabeties/Hypertension/Hypothyroidism)");
-	    sheet.getRow(0).createCell(11).setCellValue("Recipe URL");
-	   // sheet.getRow(0).createCell(12).setCellValue("To Add Ingredient");
-	    sheet.getRow(0).createCell(12).setCellValue("Allergy Ingredient");
-	    
+	  sht.getRow(0).createCell(8).setCellValue(RecipeURL);
+	  
+	  if(sht == addonSheet) {
+		  sht.getRow(0).createCell(9).setCellValue(ToAddIngredient);
+	  }
+		if(sht == allergySheet) {
+			sht.getRow(0).createCell(10).setCellValue(AllergyIngredient);  
+		}
+	  
 	    int rowno = 1;
 
-	    for (int i = 0; i < recipeNameList.size(); i++) {
+	    for (int i = 0; i < recipeListSize; i++) {
 	      {
-	        XSSFRow row = sheet.createRow(rowno++);
+	        XSSFRow row = sht.createRow(rowno++);
 	        System.out.println("rowno : " + rowno);
 	        row.createCell(0).setCellValue(rowno-1);
 	        row.createCell(1).setCellValue(recipeid.get(i).toString());
 	        row.createCell(2).setCellValue(recipeNameList.get(i).toString());
-	        row.createCell(5).setCellValue(ingredientList.get(i).toString());
-	        row.createCell(6).setCellValue(prepTimeList.get(i).toString());
-	        row.createCell(7).setCellValue(cookTimeList.get(i).toString());
-	        row.createCell(8).setCellValue(prepMethodList.get(i).toString());
-	        row.createCell(9).setCellValue(NutrientList.get(i).toString());
-	        row.createCell(11).setCellValue(RecipeUrlList.get(i).toString());
-	       
-	       // row.createCell(12).setCellValue(IngredientsAdditionList.get(i).toString());
-	        row.createCell(12).setCellValue(AllergyIngredientsList.get(i).toString());
+	        row.createCell(3).setCellValue(ingredientList.get(i).toString());
+	        row.createCell(4).setCellValue(prepTimeList.get(i).toString());
+	        row.createCell(5).setCellValue(cookTimeList.get(i).toString());
+	        row.createCell(6).setCellValue(prepMethodList.get(i).toString());
+	        row.createCell(7).setCellValue(NutrientList.get(i).toString());
+	        row.createCell(8).setCellValue(RecipeUrlList.get(i).toString());
+	        if(sht == addonSheet) {
+	        	row.createCell(9).setCellValue(IngredientsAdditionList.get(i).toString());
+	  	  }
+	  		if(sht == allergySheet) {
+	  			row.createCell(10).setCellValue(AllergyIngredientsList.get(i).toString()); 
+	  		}
+	  		
 	        System.out.println("XSS write : " + i);
 	      }
 
-	      FileOutputStream FOS = new FileOutputStream(".\\datafiles\\SmartScrapers_HypoT_Allergy.xlsx");
+	      FileOutputStream FOS = new FileOutputStream(".\\datafiles\\SmartScrapers.xlsx");
 	      
 	      workbook.write(FOS);
 
 	      FOS.close();
-	   
 	    }
-	    driver.quit();
-	  
   }
  
    
