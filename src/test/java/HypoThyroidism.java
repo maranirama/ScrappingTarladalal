@@ -62,7 +62,7 @@ public class HypoThyroidism extends BaseTest {
 
 	    driver.findElement(By.xpath("//a[@href='recipes-for-hypothyroidism-veg-diet-indian-recipes-849']")).click();
 	  
-	  int pgSize = driver.findElements(By.xpath("//div[@id='pagination']/a")).size();
+	    pgSize = driver.findElements(By.xpath("//div[@id='pagination']/a")).size();
 	    System.out.println("Pagination size:" + pgSize);
 	    
 	    Thread.sleep(1000);
@@ -86,7 +86,7 @@ public class HypoThyroidism extends BaseTest {
 	 init();
 
 	    for (int x = 1; x <= pgSize; x++) {
-	     
+	    	System.out.println("Inside eliminationFilter for"+pgSize);  
 	      try {
 	        WebElement pagei = driver.findElement(By.xpath("(//div[@id='pagination']/a)[" + x + "]"));
 	        pagei.click();
@@ -284,13 +284,12 @@ public class HypoThyroidism extends BaseTest {
 	        	//System.out.println("isMatchedInElimination - true:");
 	        	  String allergyIngredient = cht.checkAllergyIngredients(ingredientsList);
 	        	  
-	            if (allergyIngredient.length() > 0) {
-	            	System.out.println("allergyIngredient > 0:"+allergyIngredient );
-	        	
+	            if (allergyIngredient.length() <= 0) {
+	            		        	
 	            recipeid.add(formattedrecipeid.trim());
 	            recipeNameList.add(item_name);
 	            ingredientList.add(ingredientsList);
-	            AllergyIngredientsList.add(allergyIngredient);
+	          //  AllergyIngredientsList.add(allergyIngredient);
 	            
 	            
 	            WebElement PrepTime = driver.findElement(By.xpath("//p//time[1]"));
@@ -357,9 +356,9 @@ public class HypoThyroidism extends BaseTest {
 	  if(sht == addonSheet) {
 		  sht.getRow(0).createCell(9).setCellValue(ToAddIngredient);
 	  }
-		if(sht == allergySheet) {
+	/*	if(sht == allergySheet) {
 			sht.getRow(0).createCell(10).setCellValue(AllergyIngredient);  
-		}
+		}*/
 	  
 	    int rowno = 1;
 
@@ -379,14 +378,14 @@ public class HypoThyroidism extends BaseTest {
 	        if(sht == addonSheet) {
 	        	row.createCell(9).setCellValue(IngredientsAdditionList.get(i).toString());
 	  	  }
-	  		if(sht == allergySheet) {
-	  			row.createCell(10).setCellValue(AllergyIngredientsList.get(i).toString()); 
-	  		}
+//	  		if(sht == allergySheet) {
+//	  			row.createCell(10).setCellValue(AllergyIngredientsList.get(i).toString()); 
+//	  		}
 	  		
 	        System.out.println("XSS write : " + i);
 	      }
 
-	      FileOutputStream FOS = new FileOutputStream(".\\datafiles\\SmartScrapers.xlsx");
+	      FileOutputStream FOS = new FileOutputStream(".\\datafiles\\SmartScrapers_Hypothyroidism.xlsx");
 	      
 	      workbook.write(FOS);
 
