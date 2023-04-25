@@ -1,3 +1,4 @@
+package morbidityModules;
 import java.time.Duration;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -40,7 +41,7 @@ static WebDriver driver;
 	
 	@AfterClass(alwaysRun = true)
 	public void browserTearDown() {
-		//driver.quit();
+		driver.quit();
 	}
 	/*
 	@AfterMethod(alwaysRun = true)

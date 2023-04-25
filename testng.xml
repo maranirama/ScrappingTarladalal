@@ -3,8 +3,7 @@
 <suite name="Suite">
   <test thread-count="5" name="Test">
     <classes>
-      <class name=".DiabeticRecipes1"/>
-      <class name=".HighBloodPressure"/>
+      <class name=".Diabetes"/>
       <class name=".HypoThyroidism"/>
     </classes>
   </test> <!-- Test -->

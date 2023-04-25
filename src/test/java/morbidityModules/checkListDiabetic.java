@@ -1,3 +1,5 @@
+package morbidityModules;
+
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -8,10 +10,12 @@ public class checkListDiabetic
 
 public static ArrayList<String> eliminatedList = new ArrayList<String>();
 
+public static ArrayList<String> addedElementList= new ArrayList<String>();	
+
+public static ArrayList<String> allergyList= new ArrayList<String>();
 
 
-
-	static boolean checkIngrediant1(String i_Ingredient) 
+	public static boolean checkIngrediant1(String i_Ingredient) 
 	{
 		eliminatedList.add("cream of rice");
 		eliminatedList.add("rice flour");
@@ -103,13 +107,108 @@ public static ArrayList<String> eliminatedList = new ArrayList<String>();
 	}
 	
 	
+	public  static  String checkAddedIngredients(String i_Ingredient)
+	{
+		
+		
+
+		String p_Ingredient = i_Ingredient.toLowerCase();
+		System.out.println("igredeintes coming"+p_Ingredient);
+		
+		addedElementList.add("broccoli");
+		addedElementList.add("pumpkin");
+		addedElementList.add("pumpkin seeds");
+		addedElementList.add("chia seeds ");
+		addedElementList.add("flaxseeds");
+		addedElementList.add("apples");
+		addedElementList.add("nuts");
+		addedElementList.add("lady finger");
+		addedElementList.add("okra");
+		addedElementList.add("beans");
+		addedElementList.add("raspberries");
+		addedElementList.add("strawberries");
+		addedElementList.add("blueberries");
+		addedElementList.add("blackberries");
+		addedElementList.add("eggs");
+		addedElementList.add("yogurt");
+		addedElementList.add("bitter gaurd");
+		addedElementList.add("rolled oats");
+		addedElementList.add("steel cut oats");
+		addedElementList.add("chicken");
+		addedElementList.add("fish");
+		addedElementList.add("quinoa");
+		addedElementList.add("mushroom");
+
+		
+		//ing compare with arraylist
+		String isIngrediant="";
+		
+		for(String toaddingredient:addedElementList)
+		
+		{
+			
+			
+			
+			if (p_Ingredient.contains(toaddingredient)) //p_Ingredient
+			{
+				System.out.println("addedingredeint::"+p_Ingredient+"because of "+toaddingredient+"recepid"+"");
+				
+				isIngrediant=toaddingredient;
+				
+				
+				break;
+			}
+		}
+
+
+		return isIngrediant;
+			
+			
+	
 	}
 	
 	
+	public static boolean checkAllergyIngredients(String allg_Ingredient) 
+	
+	{
+		 allergyList.add("milk");
+		 allergyList.add("soy");
+		 allergyList.add("egg");
+		 allergyList.add("sesame");
+		 allergyList.add("peanuts");
+		 allergyList.add("walnuts");
+		 allergyList.add("almonds");
+		allergyList.add("hazelnut");
+		allergyList.add("pecan");
+		allergyList.add("pistachio");
+		
+		
+		
+		
+		boolean isIngredientAllergy=true;
+		//String isIngrediant="";
+		String allergy_Ingredient = allg_Ingredient.toLowerCase();
+		System.out.println("igredeintes coming" + allergy_Ingredient);
 
+		
+		for (String al: allergyList) 
+		{
+			if (allergy_Ingredient.contains(al)) // p_Ingredient
+			{
+				System.out.println("Allergy" + allg_Ingredient + "because of " + al + "recepid" + "");
+				
+				isIngredientAllergy=false;
+				
+				break;
+			}
+		}
+		return isIngredientAllergy;
+	
+	
+		}
 
 
 	
-	
+}
 
 
