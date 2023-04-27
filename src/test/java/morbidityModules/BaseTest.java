@@ -9,7 +9,7 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Optional;
 import io.github.bonigarcia.wdm.WebDriverManager;
 
-public class BaseTest{
+public class BaseTest implement FrameWorkConstant{
 	
 static WebDriver driver;
 	
